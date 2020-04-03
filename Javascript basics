@@ -1,0 +1,22 @@
+# Javascript basics:
+
+Differences between let, const and var:
+Basic difference: 
+	var: creates blocked-scope variables
+	let, const : create function-scoped variables 
+When you define var in the global scope, it creates a property on the window object and it is not a good practice to add a property on the window object because if ever you make an object having the same property then it overrides this variable;
+
+Javascript has two types of values:
+1. Value Types (also called primitives)
+2. Reference Types (Object, functions and arrays)
+
+Value Types: They are primitives and any value pointing to a primitive value stores only the value and not the address of the value;
+Reference Types: Whenever a variable points to an object/function/arrays, it holds the location of that particular object and not the value associated with it. 
+Hence, primitives are copied by value and reference types are copied by their adresses/refernces
+
+'this' keyword:
+
+this references to the current object that referring to the current function. 
+For the function/method part of an object, this=>the object
+For the function/method part of no object, this=>window object/global objet(in case of node)
+

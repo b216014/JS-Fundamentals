@@ -1,0 +1,159 @@
+AJAX 
+Introduction
+One of the fundamental tasks of a frontend application is to communicate with servers through the HTTP protocol. JavaScript can send network requests to the server and load new information whenever needed without reloading the page.
+
+The term for that kind of operation is Asynchronous JavaScript And XML (AJAX), which uses the XMLHttpRequest object to communicate with the servers. It can send and receive information in various formats, including JSON, XML, HTML, and text files.
+
+
+Procedure 
+
+1. An event occurs in a web page (the page is loaded, a button is clicked)
+2. An XMLHttpRequest object is created by JavaScript
+3. The XMLHttpRequest object sends a request to a web server
+4. The server processes the request
+5. The server sends a response back to the web page
+6. The response is read by JavaScript
+7. Proper action (like page update) is performed by JavaScript
+
+Ajax is not a framework or a programming language. It is just a set of web technologies to send and receive data between a server and a client behind the scenes. 
+It doesn't require us to reload the page in order to send or receive data. 
+Although it has XML as a part of the acronym but it doesn't use it. It uses JSON mostly as a format to send and receive data.
+
+Ajax procedure:
+We make requests to the server by typing in the urls and clinking on the links. The server then responds with a webpage or data in a beautiful format. 
+Ajax allows us to make requests asynchronously without having to reload the page. Now if you want to load a particular section of a page without disturbing the rest of the page then ajax helps because you do not have to relaod the entire page. 
+We make requests using plane/vanilla javascript or by using http libraries like axios and that request passes through an ajax engine which is converted into an XMLHttpRequest object and goes to the server. The server inturn responds with data in json/xml/plane text format and this data passes through the ajax engine again and is received at the client side as an html response. 
+
+XmlHttprequest (XHR) Object:
+
+- API in the form of an object. -> It has properties and methods attached to it 
+- It is provided by the browser's javascript environment (All modern browsers have this API)
+- Methods transfer data between client and server
+- Can be used with other protocols than http
+- Can work with data other than XML(JSON, plain text)
+
+Ways to make ajax calls:
+- jQuery (DOM manipulation library)
+- Axios
+- Superagent
+- Fetch API (Part of the browser)
+- Prototype
+- Node HTTP
+
+
+Axios:
+
+Axios is a very popular JavaScript library you can use to perform HTTP requests, that works in both Browser and Node.js platforms.
+Axios is a http method to fetch data. 
+It usually gives data in the form of JSON. It automatically converts requests and response data to json format
+It always returns a promise whose resolved value can be caught using .then or async await. 
+It has 5 basic methods associated with it.:
+
+1. GET
+   syntax: 
+   1. axios({
+   	  method:'get',
+   	  url:'',
+   	  params:{      (if any)
+   	  	_limit:5
+   	  }
+   });
+   2. axios.get('url',params(if any));
+
+   Data is received in the form of a json having many properties like headers, config, status, data etc.
+   In order to get the data received, use '.data' property. 
+
+2. POST 
+   syntax:
+   1. axios({
+   	  method:'post',
+   	  url:'',
+   	  data:{      (if any)
+   	  	_limit:5
+   	  }
+   });
+   2. axios.post('url',data(if any));
+
+   Data is posted using the .data property. 
+
+Similar is for put, patch and delete.
+Difference between put/patch: 'put' replaces the whole data set with the values passed to it as an argument but 'patch' doesn't replace instead replaces only the data passed to it and keeps the rest of the properties same. 
+
+In order to make multiple requests at the same time and receive all the data simultaneously instead of receiving one after the other, use 'axios.all()'. It takes an array as an input.
+syntax: axios.all([axios.get(),axios.get()]).then().catch()
+.then receives a response containing data in the form of a property namely data which is also an array since two promises were returned. You can access each response using the bracket operator like response[0]/response[1];
+Note: If any one of the promises is rejected, then both are rejected with the error provided by the prmise that is rejected. '
+
+# axios.spread():
+Axios also provides a method called axios.spread() to assign the properties of the response array to separate variables. Here’s how you could use this method:
+
+axios.all([
+  axios.get('https://api.github.com/users/mapbox'),
+  axios.get('https://api.github.com/users/phantomjs')
+])
+.then(axios.spread((user1, user2) => {
+  console.log('Date created: ', user1.data.created_at);
+  console.log('Date created: ', user2.data.created_at);
+}));
+
+// logs:
+// => Date created:  2011-02-04T19:02:13Z
+// => Date created:  2017-04-03T17:25:46Z
+
+
+If the promise is fulfilled, the first argument of then() will be called; if the promise is rejected, the .catch will be called. According to the documentation, the fulfillment value is an object containing the following information:
+
+{
+  // `data` is the response that was provided by the server
+  data: {},
+ 
+  // `status` is the HTTP status code from the server response
+  status: 200,
+ 
+  // `statusText` is the HTTP status message from the server response
+  statusText: 'OK',
+ 
+  // `headers` the headers that the server responded with
+  // All header names are lower cased
+  headers: {},
+ 
+  // `config` is the config that was provided to `axios` for the request
+  config: {},
+ 
+  // `request` is the request that generated this response
+  // It is the last ClientRequest instance in node.js (in redirects)
+  // and an XMLHttpRequest instance the browser
+  request: {}
+}
+
+# Sending custom headers
+Sending custom headers with Axios is very straightforward. Simply pass an object containing the headers as the last argument. For example:
+
+const options = {
+  headers: {'X-Custom-Header': 'value'}
+};
+
+axios.post('/save', { a: 10 }, options);
+
+Using Axios has quite a few advantages over the native Fetch API:
+
+supports older browsers (Fetch needs a polyfill)
+has a way to abort a request
+has a way to set a response timeout
+has built-in CSRF protection
+supports upload progress
+performs automatic JSON data transformation
+works in Node.js
+
+There are 2 reasons to use axios over fetch
+
+Using fetch() there is a two-step process when handing JSON data. The first is to make the actual request and then the second is to call the .json() method on the response, where on axios you get json response by default.
+
+And second issue with fetch() is it does not handle exceptions as intended, it does not enter in catch block when error occurs but axios works as expected in error handling.
+
+see this medium article for details and example: fetch vs axios
+
+
+
+
+

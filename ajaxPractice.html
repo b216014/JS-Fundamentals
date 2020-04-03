@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJax crash course</title>
+</head>
+<body>
+    <button id="btn">Get Text File</button>
+    <script>
+        const loadText = () => {
+            // Create the XHR object
+            var xhr = new XMLHttpRequest();
+            // Open function (type, url/file name/ asynchronous or not(T/F))
+            xhr.open('GET','sample.txt',true)
+            // onload is not going to run unless it ready
+            xhr.onload = () => {
+                if(xhr.status == 200){
+                    console.log(xhr.responseText)
+                }
+            }
+            // Sends a request
+            xhr.send();
+        }
+        document.getElementById('btn').addEventListener('click',loadText);
+    </script>
+</body>
+</html>

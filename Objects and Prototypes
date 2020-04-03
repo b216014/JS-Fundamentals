@@ -1,0 +1,83 @@
+Objects and Prototypes
+
+The way to tell javascript that the function being used is to create new objects is by using the 'new' keyword. 'new' keyword switches it to constructor mode. There is another way to create objects using constructors and that is using 'this' keyword. 
+By using 'this' keyword, you don't have to mention the new variable being declared because it explicitly creates the this keyword whixh is essentially an object. You don't even have to return the newly formed object. 
+The key difference between creating objects using normal functions and using this keyword is that in case of this keyword, it doesn't have to be initialized or returned whereas in case of normal functions, we need to explicitly initialize as well as return the object. 
+The function gets called in contructor mod whenever you use the 'new' keyword. Without 'new' keyword, it gets called in the normal mode. Also use regular case when you are declaring the function name. 
+calling a regular function in contructor mode(by using new keyword) still works fine but 
+
+UNIT 2: Function execution types:
+
+There are four ways in which a function can be called in javascript, two of which can be found above 
+1. regular mode
+2. Constructor mode
+
+In function declaration, the function is created during the compilation stage and during function expression, function is created during the interpretation stage( refer java Brains - Scopes and Closures)
+
+Execution context in JS: 
+There are two default arguments to any function call and they are:  - arguments and - this
+The global object itself depends on the runtime environment that we are using i.e, if the runtime environment is a browser then the global object is the window object and if ypu run it on node, then the global object is the object 'global'
+
+Four ways of calling functions:
+1. foo() : In this case the value of the 'this' keyword is the global object. 
+2. anyObject.foo() : The value of 'this' refers to that particular object using which the function is called. 
+3. new foo() : The value of 'this' is the value of newly created object that is created inside the function foo. This is the consructir method. 
+4. function.call(another_function): Using call to pass the context of one to another 
+
+Every function in javascript is an object and objects have properties attached to them. One such property is the function 'call'. 
+function.call()=function();
+The basic difference in the above line is that call method binds the 'this' variable associated with the function to the object passed inside the call method. 
+For example: func.call(obj) binds the obj object to 'this' which is inside the func function. 
+
+
+UNIT 3: PROTOTYPES: 
+
+Prototypes is a concept in Javascript which lets you build objects using a template or a blueprint. In other programming languages, this happens with the help of a class which is essentially a blueprint of the way an object is to be shaped. In javascript, this is done using prototypes though prototypes do not allow you to create instances. 
+Whenever you create an object using constructor mode, if there is a function associated with that constructor function, then every time you create a function, a new copy of the reference to that function is created. Imagine in a company when you are trying to fill in employee details, there would be thousands of such references which is not a good idea. To combat this, 
+
+a. Introducing prototypes:
+   Functions are objects in javascript which means that whenever you create a function in Javascript, it creates an object with a name of the function. 
+   Whenever the Javscript creates functions, it creates two objects, one is the function object and the other is the prototype object. 
+   You can access the prototype object in javascript using the '.protoype' property on the function. You can access the function object by typing the name of the function. 
+   This property is attached to all the functions and not just one function. 
+   When you create objects via functions using the constructor method, new objects are created using the 'this' variable which is returned in every function. In this method, the object has access to the Protype object of the function (constructor) as well and that takes place using the '__proto__' property. 
+   So, when functions are created, the '.prototype' gives access to the Protype object and when objects are created via the constructor method, Protype object is acessd via the '__proto__' property on the object. 
+   If there are multiple objects created using the constructor method, then all the '__proto__' properties on the object have access to the same Prototype object. 
+   Ex: function foo() {}
+   foo.prototype.any_property=objectOfFoo.__proto__.any_property
+
+b. Property lookup with prototypes
+   Whenever you try to access a property on a particular object, the javascript engine first checks if the property is present as a part of the object or not. If the property is not a part of the object then it checks if the property is a part of the Prototype object. If it is, it returns that particular value. So in first case, if the property is present on the object, then it returns the value of the property attached to that object, otherwise it checks the Prototype object and returns the value there. This lookup happens dyanamically at runtime. You can add properties to Prototype object at runtime. So essentially, the properties on Prototype object act like the static variables of classes which do not have to be separate copies of each object and can be one property of just one object. 
+   Every object created using that function/constructor has the same properties defined in the Prototype object. 
+
+  Doubts: Doesn't work with the latest ES6 and also doesn't work with the arrow functions(Google browser). Works well for the mozilla browser but doesn't work with the arrow functions. 
+
+c. Object links with prototypes
+   The double underscores in '__proto__' are referred to as 'dunder'.
+   There is an alternative name to __proto__ known as dunder-proto and it comes from the double underscores known as dunder.
+   Prototype object has a constructor which can be accessed using the '.constructor'. This constructor points to the function in return who has an object Prototype accessed using prototype(confusing huh? Look at the diagram). They are just references and not copies. 
+   Ex: function foo(){}
+   const newObj = new foo(); newObj.__proto__.constructor = function foo();
+   This implies that the constructor property gives the function which created it which is fairly evident in general. So, const newOb = new foo() is same as const newO = newObj.__proto__.constructor();
+
+   It is advised to define the property (that you want all your objects to hold) to be defined using the function.prototype rather than explicitly creating it using the object. 
+   If you change the constructor reference on an object then that object would use a separate refernce to point to the function which created it (constructor basically). Look at the example below
+   Ex: const a = new foo();
+   a.__proto__.constructor= f(); then it doesn't refer to the foo() anymore and only refers to the f();
+
+
+ d. The Object function
+ 	Like the window object which is the global object in the browser, Object() is a global object too. There are two different yet simple ways to create an object in javascript and they are:
+ 	1. const obj = {} and 2. const Obj = new Object();
+ 	In the second case, Object is a function and hence it will have the __proto__ property pointing to the Object.prototype ( both are the same ). 
+ 	1 and 2 are essentially the same and creating an object using two curly braces is same as creating it using new Object(); And hence, obj.__proto__=Object.prototype
+ 	Note: __proto__ is essentially a refernce or an alias to the function's Prototype object.
+ 	Note: The function.prototype object is actually created implicitly by using new Object()/ The automatically created prototype objectis actually created by using new Object();
+ 	The function.prototype/Prototype object hence has a dunder property/__proto__ property which in return points to the Object.prototype(Object's Protottype object)
+ 	When you add a property to Object's prototype using Object.prototype.someProperty then you are essentially adding that property to all the objects because at the end, all the objects are created from the Object.
+ 	Note: The Object's prototype object points to Prototype object which is essentially null => Object.prototype = Prototype Object -> points to null/Object.prototype.__proto__=null. 
+ 	The Object's prototype is like the Grandfather of all the prototypes present in the Javascript.
+
+
+ e. Inheritance in Javascript
+ 	We can achieve inheritance in javascript by setting the child's parent prototype point to the parent's prototype instead of Object's prototype 
